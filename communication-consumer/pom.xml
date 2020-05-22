@@ -31,10 +31,9 @@
             <groupId>com.alibaba.csp</groupId>
             <artifactId>sentinel-datasource-nacos</artifactId>
         </dependency>
-        <!-- 引入自己定义的api通用包-->
-        <dependency>
-            <groupId>com.chenshuhong.springcloud</groupId>
-            <artifactId>cloud-api-commons</artifactId>
+        <dependency><!-- 引入自己定义的api通用包-->
+            <groupId>wisdomCommand</groupId>
+            <artifactId>communication-commons</artifactId>
             <version>${project.version}</version>
         </dependency>
         <!-- SpringBoot整合Web组件 -->

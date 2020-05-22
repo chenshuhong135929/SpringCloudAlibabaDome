@@ -1,7 +1,7 @@
 package com.wisdomcommand.communication.service.impl;
 
-import com.chenshuhong.springcloud.entities.CommonResult;
-import com.chenshuhong.springcloud.entities.Payment;
+import com.communication.common.CommonResult;
+import com.communication.common.Payment;
 import com.wisdomcommand.communication.service.PaymentService;
 import org.springframework.stereotype.Component;
 

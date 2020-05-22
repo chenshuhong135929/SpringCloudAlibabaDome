@@ -1,13 +1,12 @@
 package com.wisdomcommand.communication.controller;
 
-import com.chenshuhong.springcloud.entities.CommonResult;
-import com.chenshuhong.springcloud.entities.Payment;
+import com.communication.common.CommonResult;
+import com.communication.common.Payment;
 import com.wisdomcommand.communication.service.PaymentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
