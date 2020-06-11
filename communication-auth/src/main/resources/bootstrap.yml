@@ -1,0 +1,20 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  application:
+    name: communication-auth
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 47.112.186.155:8080 #Nacos服务注册中心地址
+      config:
+        server-addr: 47.112.186.155:8080 #Nacos作为配置中心地址
+        file-extension: yaml #指定yaml格式的配置
+        group: CSH_GROUP #指定配置文件的组类型
+        namespace: 39e5abd4-68cc-453a-8074-021aa0aa9393
+
+  redis:
+    host: 192.168.2.17
+    password:
+    port: 6379
+    database: 0

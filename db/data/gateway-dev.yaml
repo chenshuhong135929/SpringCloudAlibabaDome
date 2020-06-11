@@ -1,0 +1,27 @@
+server:
+  port: 8000
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+      - id: wisdom_command_routh
+        uri: lb://communication-consumer
+        predicates:
+        - Path=/communication/**
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://47.112.186.155:3308/oauth2_config?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2b8
+    username: root
+    password: 123456
+
+ribbon:
+  ReadTimeout: 30000
+  ConnectTimeout: 30000
+
+logging:
+  level:
+    web: trace

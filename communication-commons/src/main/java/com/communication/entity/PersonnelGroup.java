@@ -1,0 +1,30 @@
+package com.communication.entity;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.Date;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@ApiModel(value = "人员分组表",description = "人员分组表")
+public class PersonnelGroup {
+  @ApiModelProperty(value = "人员分组主键")
+  private String pgId;
+
+  @ApiModelProperty(value = "创建人员Id")
+  private Long personnelId;
+
+  @ApiModelProperty(value = "分组名称")
+  private String pgName;
+
+  @ApiModelProperty(value = "描述")
+  private String description;
+
+  @ApiModelProperty(value = "创建时间")
+  private Date createBy;
+}
