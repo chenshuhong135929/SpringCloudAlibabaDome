@@ -32,7 +32,7 @@
         <mybatis.spring.boot.version>3.0.1</mybatis.spring.boot.version>
         <netty.version>4.1.43.Final</netty.version>
         <knife4j.version>2.0.3</knife4j.version>
-        <springcloudalibaba.version>2.1.0.RELEASE</springcloudalibaba.version>
+        <springcloudalibaba.version>2.2.1.RELEASE</springcloudalibaba.version>
     </properties>
 
     <!-- 子模块继承之后，提供作用：锁定版本+子modlue不用写groupId和version  -->

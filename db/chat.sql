@@ -55,4 +55,9 @@ CREATE TABLE `personnel_group_details` (
   PRIMARY KEY (`pgdid`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin ROW_FORMAT=DYNAMIC COMMENT='人员分组详情表';
 
-
+#测试用
+CREATE TABLE `payment` (
+  `id` int NOT NULL,
+  `serial` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;

@@ -1,5 +1,6 @@
 package com.wisdomcommand.communication.controller;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.communication.common.CommonResult;
 import com.communication.entity.Payment;
 import com.wisdomcommand.communication.service.PaymentService;
@@ -22,6 +23,7 @@ public class PaymentController {
 
   @ApiOperation(value = "调试")
   @GetMapping(value = "/paymentSQL/{id}")
+  @SentinelResource("/paymentSQL/{id}")
   @ApiImplicitParam(name = "id",value = "主键ID", required = true,paramType = "path")
   public CommonResult<Payment> paymentSQL(@PathVariable("id") Long id)
   {

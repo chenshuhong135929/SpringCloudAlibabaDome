@@ -5,8 +5,12 @@ spring:
     nacos:
       discovery:
         server-addr: 47.112.186.155:8080 #Nacos服务注册中心地址
+        username: nacos
+        password: test
       config:
         server-addr: 47.112.186.155:8080 #Nacos作为配置中心地址
+        username: nacos
+        password: test
         file-extension: yaml #指定yaml格式的配置
         group: CSH_GROUP #指定配置文件的组类型
         namespace: 39e5abd4-68cc-453a-8074-021aa0aa9393
