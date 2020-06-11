@@ -1,7 +1,7 @@
 package com.wisdomcommand.communication.controller;
 
 import com.communication.common.CommonResult;
-import com.communication.common.Payment;
+import com.communication.entity.Payment;
 import com.wisdomcommand.communication.service.PaymentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;

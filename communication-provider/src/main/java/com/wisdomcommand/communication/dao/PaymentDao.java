@@ -1,12 +1,10 @@
 package com.wisdomcommand.communication.dao;
 
-import com.communication.common.Payment;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.communication.entity.Payment;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
-public interface PaymentDao {
+public interface PaymentDao  extends BaseMapper<Payment>  {
 
-  Payment paymentSQL(Long  id);
-
-  Long addPayment(Payment p);
 }

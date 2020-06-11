@@ -27,14 +27,16 @@
         <artifactId>hutool-all</artifactId>
         <version>5.1.0</version>
     </dependency>
-      <!-- Swagger核心包 start -->
+      <!-- knife4j核心包 start-->
       <dependency>
-          <groupId>io.springfox</groupId>
-          <artifactId>springfox-swagger2</artifactId>
+          <groupId>com.github.xiaoymin</groupId>
+          <artifactId>knife4j-spring-boot-starter</artifactId>
       </dependency>
+
       <dependency>
-          <groupId>io.springfox</groupId>
-          <artifactId>springfox-swagger-ui</artifactId>
+          <groupId>com.baomidou</groupId>
+          <artifactId>mybatis-plus-boot-starter</artifactId>
+
       </dependency>
 </dependencies>
 

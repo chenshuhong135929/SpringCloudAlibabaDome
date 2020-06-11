@@ -1,7 +1,7 @@
 package com.wisdomcommand.communication.service;
 
 import com.communication.common.CommonResult;
-import com.communication.common.Payment;
+import com.communication.entity.Payment;
 import com.wisdomcommand.communication.service.impl.PaymentFallbackService;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
