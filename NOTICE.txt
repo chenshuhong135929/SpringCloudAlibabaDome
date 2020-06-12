@@ -22,3 +22,92 @@ http://localhost:8000/doc.html
    * http://localhost:8083/oauth/token?grant_type=refresh_token&client_id=app&client_secret=app&refresh_token=a3827afa-f17c-40ea-b6be-739380b8f603
    * post (验证token是否有效)
    * http://localhost:8083/oauth/check_token?token=85f2f91e-2b5b-47e8-b6a7-ecf00c710b6a
+
+ docker 容器化部署
+ 1，打开liunx服务器（开启 Docker 远程访问）
+
+        1.1 打开 docker 配置文件
+             vi /lib/systemd/system/docker.service
+
+        1.2 开放 2376 端口
+          找到ExecStart=/usr/bin/dockerd所在行，在后面追加-H tcp://0.0.0.0:2376 -H unix:///var/run/docker.sock，修改完成的效果如
+          示例：  ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock -H tcp://0.0.0.0:2376 -H unix:///var/run/docker.sock
+2，重启 docker 服务
+    systemctl daemon-reload
+    systemctl restart docker.service
+
+3，docker-maven-plugin 构建 docker 镜像
+    3.1 在需要构建组件的模块引入 docker-maven-plugin 插件
+    <plugin>
+    	<groupId>com.spotify</groupId>
+    	<artifactId>docker-maven-plugin</artifactId>
+    	<version>1.2.2</version>
+    	<configuration>
+    		<imageName>${project.artifactId}</imageName>
+    		<imageTags>
+    			<imageTag>latest</imageTag>
+    		</imageTags>
+    		<!--指定Dockerfile路径-->
+    		<dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
+    		<dockerHost>http://xxx.xx.xx.xx:2376</dockerHost>
+    		<resources>
+    			<resource>
+    				<targetPath>/</targetPath>
+    				<!--${project.basedir}/target-->
+    				<directory>${project.build.directory}</directory>
+    				<!--${project.artifactId}-${project.version}-->
+    				<include>${project.build.finalName}.jar</include>
+    			</resource>
+    		</resources>
+    	</configuration>
+    </plugin>
+
+4，在模块的 src/main/docker 目录下建立 Dockerfile 文件
+    内容如下：
+    FROM openjdk:8-jdk-alpine
+    VOLUME /tmp
+    ARG JAR_FILE
+    COPY ${JAR_FILE} app.jar
+    ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
+
+5.在模块下执行如下命令构建 docker 镜像（用cmd命令切换到项目路径运行）
+
+ mvn clean package docker:build -DskipTests
+
+==================================================================================================
+
+使用 docker-compose 启动
+version: "3"
+services:
+  communication-gateway:
+    container_name:communication-gateway
+    image: communication-gateway:latest
+    ports:
+      - "8000:8000"
+    restart: always
+
+  communication-consumer:
+    container_name: communication-consumer
+    image: communication-consumer:latest
+    ports:
+      - "8081:8081"
+    restart: always
+
+  communication-auth:
+    container_name: communication-auth
+    image: communication-auth:latest
+    ports:
+      - "8083:8083"
+    restart: always
+
+  communication-provider:
+     container_name: communication-provider
+     image: communication-provider:latest
+     ports:
+       - "8082:8082"
+     restart: always
+
+启动
+docker-compose -f docker-compose up
+退出
+docker-compose -f docker-compose down

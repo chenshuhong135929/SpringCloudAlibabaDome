@@ -1,4 +1,24 @@
-spring:
+server:
+  servlet:
+    context-path: /communication
+  port: 8081
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+
+#消费者将要去访问的微服务名称(注册成功进nacos的微服务提供者)
+service-url:
+  nacos-user-service: http://communication-provider
+
+
+# 激活Sentinel对Feign的支持
+feign:
+  sentinel:
+    enabled: true
+    spring:
   application:
     name: communication-consumer
   cloud:

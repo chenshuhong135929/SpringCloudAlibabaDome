@@ -8,9 +8,7 @@
   |
   + communication-consumer  #生产者（Sentinel 限流，以及操作）
   |
-  + communication-gateway   #网关  （oauth 授权认证校验）
-  |
-  + communication-gateway   #网关  （oauth 授权认证校验）
+  + communication-gateway   #网关  （oauth 授权认证校验 ，Sentinel 限流，以及操作）
   |
   + communication-provider  #消费者（mybatis-plus）
   |
