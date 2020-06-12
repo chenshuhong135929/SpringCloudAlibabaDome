@@ -23,7 +23,6 @@ public class PaymentController {
 
   @ApiOperation(value = "调试")
   @GetMapping(value = "/paymentSQL/{id}")
-  @SentinelResource("/paymentSQL/{id}")
   @ApiImplicitParam(name = "id",value = "主键ID", required = true,paramType = "path")
   public CommonResult<Payment> paymentSQL(@PathVariable("id") Long id)
   {
