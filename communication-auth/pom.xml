@@ -74,9 +74,23 @@
             <artifactId>spring-cloud-starter-security</artifactId>
         </dependency>
     </dependencies>
-
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <!--加入下面两项配置-->
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <includeSystemScope>true</includeSystemScope>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
@@ -87,7 +101,7 @@
                         <imageTag>latest</imageTag>
                     </imageTags>
                     <!--指定Dockerfile路径-->
-                    <dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
+                    <dockerDirectory>${project.basedir}</dockerDirectory>
                     <dockerHost>http://120.78.86.102:2376</dockerHost>
                     <resources>
                         <resource>

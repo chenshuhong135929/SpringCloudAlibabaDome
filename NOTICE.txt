@@ -38,37 +38,57 @@ http://localhost:8000/doc.html
 
 3，docker-maven-plugin 构建 docker 镜像
     3.1 在需要构建组件的模块引入 docker-maven-plugin 插件
-    <plugin>
-    	<groupId>com.spotify</groupId>
-    	<artifactId>docker-maven-plugin</artifactId>
-    	<version>1.2.2</version>
-    	<configuration>
-    		<imageName>${project.artifactId}</imageName>
-    		<imageTags>
-    			<imageTag>latest</imageTag>
-    		</imageTags>
-    		<!--指定Dockerfile路径-->
-    		<dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
-    		<dockerHost>http://xxx.xx.xx.xx:2376</dockerHost>
-    		<resources>
-    			<resource>
-    				<targetPath>/</targetPath>
-    				<!--${project.basedir}/target-->
-    				<directory>${project.build.directory}</directory>
-    				<!--${project.artifactId}-${project.version}-->
-    				<include>${project.build.finalName}.jar</include>
-    			</resource>
-    		</resources>
-    	</configuration>
-    </plugin>
+        <build>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <!--加入下面两项配置-->
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>repackage</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <includeSystemScope>true</includeSystemScope>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>com.spotify</groupId>
+                    <artifactId>docker-maven-plugin</artifactId>
+                    <version>1.2.2</version>
+                    <configuration>
+                        <imageName>${project.artifactId}</imageName>
+                        <imageTags>
+                            <imageTag>latest</imageTag>
+                        </imageTags>
+                        <!--指定Dockerfile路径-->
+                        <dockerDirectory>${project.basedir}</dockerDirectory>
+                        <dockerHost>http://120.78.86.102:2376</dockerHost>
+                        <resources>
+                            <resource>
+                                <targetPath>/</targetPath>
+                                <!--${project.basedir}/target-->
+                                <directory>${project.build.directory}</directory>
+                                <!--${project.artifactId}-${project.version}-->
+                                <include>${project.build.finalName}.jar</include>
+                            </resource>
+                        </resources>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </build>
 
 4，在模块的 src/main/docker 目录下建立 Dockerfile 文件
     内容如下：
-    FROM openjdk:8-jdk-alpine
-    VOLUME /tmp
-    ARG JAR_FILE
-    COPY ${JAR_FILE} app.jar
-    ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
+   FROM openjdk:8-jdk-alpine
+   VOLUME /tmp
+   COPY  target/*.jar app.jar
+   EXPOSE 8000
+   ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-Dspring.profiles.active=dev","-jar","/app.jar"]
+
 
 5.在模块下执行如下命令构建 docker 镜像（用cmd命令切换到项目路径运行）
 
