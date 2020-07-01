@@ -27,4 +27,4 @@ services:
     ports:
     - "8082:8082"
     restart: always
-  docker run -d -p 8080:8000  --rm communication-gateway
+
