@@ -41,8 +41,10 @@ public class ReactiveJdbcAuthenticationManager implements ReactiveAuthentication
           OAuth2AccessToken oAuth2AccessToken = this.tokenStore.readAccessToken(accessToken);
           //根据access_token从数据库获取不到OAuth2AccessToken
           if(oAuth2AccessToken == null){
+            log.info("token未携带---------------------------------------》》》》》》》》》》");
             return Mono.error(new InvalidTokenException("invalid access token,please check"));
           }else if(oAuth2AccessToken.isExpired()){
+            log.info("token已经过期---------------------------------------》》》》》》》》》》");
             return Mono.error(new InvalidTokenException("access token has expired,please reacquire token"));
           }
 
