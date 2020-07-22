@@ -15,23 +15,18 @@ spring:
         group: CSH_GROUP #指定配置文件的组类型
         namespace: 39e5abd4-68cc-453a-8074-021aa0aa9393
 
-    sentinel:
-      transport:
-        #配置Sentinel dashboard地址( 本地调试开 启本地 Sentinel )
-        dashboard: 192.168.2.17:8080
-        port: 8719
-      eager: true
-      scg:
-        fallback:
-          mode: response
-          response-status: 455
-          response-body: error!
-      datasource:
-        ds1:
-          nacos:
-            server-addr: 47.112.186.155:8080  #将 sentinel的数据持久化到Nacos数据库
-            dataId: gateway-dev-sentinel
-            groupId: sentinel-confg
-            data-type: json
-            rule-type: flow
-            namespace: 39e5abd4-68cc-453a-8074-021aa0aa9393
+  sentinel:
+    transport:
+      #配置Sentinel dashboard地址( 本地调试开 启本地 Sentinel )
+      dashboard: 192.168.2.17:8080
+    datasource:
+      ds1:
+        nacos:
+          server-addr: 47.112.186.155:8080  #将 sentinel的数据持久化到Nacos数据库
+          data-id: sentinel-confg
+          group-id: CSH_GROUP
+          username: nacos
+          password: test
+          data-type: json
+          rule-type: flow
+          namespace: 39e5abd4-68cc-453a-8074-021aa0aa9393

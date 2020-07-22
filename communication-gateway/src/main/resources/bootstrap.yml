@@ -17,7 +17,7 @@ spring:
 
     sentinel:
       transport:
-        #配置Sentinel dashboard地址( 本地调试开 启本地 Sentinel )
         dashboard: 192.168.2.17:8080
         port: 8719
-      eager: true
+
+
