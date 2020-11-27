@@ -25,7 +25,6 @@
     <dependency>
         <groupId>cn.hutool</groupId>
         <artifactId>hutool-all</artifactId>
-        <version>5.1.0</version>
     </dependency>
       <!-- knife4j核心包 start-->
       <dependency>
@@ -36,7 +35,11 @@
       <dependency>
           <groupId>com.baomidou</groupId>
           <artifactId>mybatis-plus-boot-starter</artifactId>
-
+      </dependency>
+      <dependency><!-- 引入自己定义的api通用包-->
+          <groupId>wisdomCommand</groupId>
+          <artifactId>communication-commons</artifactId>
+          <version>${project.version}</version>
       </dependency>
 </dependencies>
 </project>

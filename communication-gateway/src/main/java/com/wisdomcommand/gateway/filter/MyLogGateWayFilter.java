@@ -34,6 +34,7 @@ public class MyLogGateWayFilter implements GlobalFilter,Ordered{
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+        log.info("url **RequestPath*********:  "+exchange.getRequest().getPath());
         log.info("***********come in MyLogGateWayFilter:  "+new Date());
 
         String userName = exchange.getRequest().getQueryParams().getFirst("userName");

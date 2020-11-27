@@ -4,11 +4,11 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 47.112.186.155:8080 #Nacos服务注册中心地址
+        server-addr: 192.168.1.118:8848 #Nacos服务注册中心地址
         username: nacos
         password: test
       config:
-        server-addr: 47.112.186.155:8080 #Nacos作为配置中心地址
+        server-addr: 192.168.1.118:8848 #Nacos作为配置中心地址
         username: nacos
         password: test
         file-extension: yaml #指定yaml格式的配置

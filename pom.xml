@@ -36,6 +36,7 @@
         <netty.version>4.1.43.Final</netty.version>
         <knife4j.version>2.0.3</knife4j.version>
         <springcloudalibaba.version>2.2.1.RELEASE</springcloudalibaba.version>
+        <hutool.version>5.1.0</hutool.version>
     </properties>
 
     <!-- 子模块继承之后，提供作用：锁定版本+子modlue不用写groupId和version  -->
@@ -130,6 +131,11 @@
                 <groupId>com.baomidou</groupId>
                 <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
                 <version>${dynamic.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
             </dependency>
         </dependencies>
 
