@@ -6,6 +6,16 @@
 
 
 
+    <insert id="addOauthClientDetails"  parameterType="com.wisdomcommand.communication.entity.OauthClientDetails">
+          insert into   oauth_client_details (client_id,resource_ids,client_secret,scope,authorized_grant_types,web_server_redirect_uri,authorities,access_token_validity,refresh_token_validity, additional_information,autoapprove  ) VALUES
+          (#{clientId},#{resourceIds},#{clientSecret},#{scope},#{authorizedGrantTypes},#{webServerRedirectUri},#{authorities},#{accessTokenValidity},#{refreshTokenValidity},#{additionalInformation},#{autoapprove})
+    </insert>
+
+
+
+    <select id="selectByClientId" resultType="java.lang.Long">
+        select count(*) from  oauth_client_details where client_id=#{clientId}
+    </select>
 
     <resultMap id="oauthClientDetailsMapperResultMap" type="com.wisdomcommand.communication.entity.OauthClientDetails">
         <id column="client_id" property="clientId" jdbcType="VARCHAR"/>

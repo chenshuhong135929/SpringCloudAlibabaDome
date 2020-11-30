@@ -44,15 +44,15 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
    * access_token存储器
    * 这里存储在数据库，大家可以结合自己的业务场景考虑将access_token存入数据库还是redis
    *get （网页受权）
-   * http://192.168.2.17:8083/oauth/authorize?response_type=code&client_id=app&redirect_uri=https://www.baidu.com
+   * http://192.168.2.17:8083/auth-consumer/oauth/authorize?response_type=code&client_id=app&redirect_uri=https://www.baidu.com
    * post （受权码）
-   * http://192.168.2.17:8083/oauth/token?grant_type=authorization_code&code=POE5z8&redirect_uri=https://www.baidu.com&scope=all&client_id=app&client_secret=app
+   * http://192.168.2.17:8083/auth-consumer/oauth/token?grant_type=authorization_code&code=POE5z8&redirect_uri=https://www.baidu.com&scope=all&client_id=app&client_secret=app
    * post （密码受权模式）
-   * http://192.168.2.17:8083/oauth/token?grant_type=password&redirect_uri=https://www.baidu.com&scope=all&client_id=app&client_secret=app&username=app&password=111111
+   * http://192.168.2.17:8000/auth-consumer/oauth/token?grant_type=password&client_id=app&client_secret=app&username=app&password=111111
    * post (刷新token,这个值refresh_token在获取token接口中的获取)
-   * http://192.168.2.17:8083/oauth/token?grant_type=refresh_token&client_id=app&client_secret=app&refresh_token=a3827afa-f17c-40ea-b6be-739380b8f603
+   * http://192.168.2.17:8083/auth-consumer/oauth/token?grant_type=refresh_token&client_id=app&client_secret=app&refresh_token=a3827afa-f17c-40ea-b6be-739380b8f603
    * post (验证token是否有效)
-   * http://192.168.2.17:8083/oauth/check_token?token=85f2f91e-2b5b-47e8-b6a7-ecf00c710b6a
+   * http://192.168.2.17:8083/auth-consumer/oauth/check_token?token=85f2f91e-2b5b-47e8-b6a7-ecf00c710b6a
    */
 
   @Bean

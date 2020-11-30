@@ -3,6 +3,7 @@ package com.wisdomcommand.communication.entity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
@@ -12,6 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @ApiModel(value = "授权客户端资源 ",description = "授权客户端资源 表")
+@Data
 public class OauthClientDetails {
 
   @ApiModelProperty(value = "客户端Id")
