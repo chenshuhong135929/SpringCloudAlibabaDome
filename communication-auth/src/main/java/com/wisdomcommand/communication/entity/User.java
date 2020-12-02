@@ -29,6 +29,6 @@ public class User {
   @ApiModelProperty(value = "名称")
   private String userName;
 
-  @ApiModelProperty(value = "角色")
+  @ApiModelProperty(value = "角色，USER，ADMIN，")
   private String  role;
 }
