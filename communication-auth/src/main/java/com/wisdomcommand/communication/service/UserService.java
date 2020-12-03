@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.communication.common.CommonResult;
 import com.wisdomcommand.communication.entity.User;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -24,8 +25,8 @@ public interface  UserService  extends IService<User> {
 
   /**
    * 删除用户
-   * @param userId
+   * @param ids
    * @return
    */
-  CompletableFuture<CommonResult>deleteUser(long userId);
+  CompletableFuture<CommonResult>deleteUser(List<Long> ids);
 }

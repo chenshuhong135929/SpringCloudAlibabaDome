@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * @Auther ChenShuHong
  * @Date 2020-11-27 15:35
@@ -30,6 +32,14 @@ public class OauthClientDetailsController {
   @ApiOperation(value = "添加授权用户")
   public CommonResult addOauthClientDetails(@RequestBody OauthClientDetails oauthClientDetails) throws  Exception{
     return oauthClientDetailsService.addOauthClientDetails(oauthClientDetails).get();
+  }
+
+
+
+  @PostMapping("deleteOauthClientDetails")
+  @ApiOperation(value = "删除授权用户")
+  public CommonResult deleteOauthClientDetails(@RequestBody List<String> ids) throws  Exception{
+    return oauthClientDetailsService.deleteOauthClientDetails(ids).get();
   }
 
 

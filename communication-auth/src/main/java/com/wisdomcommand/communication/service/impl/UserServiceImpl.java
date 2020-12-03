@@ -16,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -81,18 +82,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
   }
 
   @Override
-  public CompletableFuture<CommonResult> deleteUser(long  UserId) {
+  public CompletableFuture<CommonResult> deleteUser(List<Long> ids) {
 
     CommonResult result = new CommonResult();
     CompletableFuture<CommonResult> future = CompletableFuture.supplyAsync(() -> {
-
-      if (userMapper.deleteById(UserId)> 0) {
+        userMapper.deleteBatchIds(ids);
         result.setCode(HttpStatus.HTTP_OK);
         result.setMessage("删除用户成功。");
-      } else {
-        result.setCode(HttpStatus.HTTP_INTERNAL_ERROR);
-        result.setMessage("删除失败。");
-      }
       return result;
     });
 

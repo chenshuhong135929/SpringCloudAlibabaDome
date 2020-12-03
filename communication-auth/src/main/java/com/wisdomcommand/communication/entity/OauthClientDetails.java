@@ -1,5 +1,7 @@
 package com.wisdomcommand.communication.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -17,6 +19,7 @@ import lombok.NoArgsConstructor;
 public class OauthClientDetails {
 
   @ApiModelProperty(value = "客户端Id")
+  @TableId(type = IdType.INPUT)
   private String clientId;
 
   @ApiModelProperty(value = "资源Id")

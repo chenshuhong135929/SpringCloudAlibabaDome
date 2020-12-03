@@ -11,7 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @Service
@@ -23,6 +25,8 @@ public class OauthClientDetailsServiceImpl extends ServiceImpl<OauthClientDetail
   OauthClientDetailsMapper oauthClientDetailsMapper;
   @Autowired
   PasswordEncoder passwordEncoder;
+
+  @Transactional
   @Override
   public CompletableFuture<CommonResult> addOauthClientDetails(OauthClientDetails oauthClientDetails) {
 
@@ -80,6 +84,31 @@ public class OauthClientDetailsServiceImpl extends ServiceImpl<OauthClientDetail
       result.setMessage("系统出错误，请联系管理员。");
       return result;
     });
+
+
+    return future;
+  }
+
+  @Transactional
+  @Override
+  public CompletableFuture<CommonResult> deleteOauthClientDetails(List<String> ids) {
+
+    CommonResult result = new CommonResult();
+    CompletableFuture<CommonResult> future =  CompletableFuture.supplyAsync(()->{
+
+      oauthClientDetailsMapper.deleteBatchIds(ids);
+      result.setMessage("删除授权成功！！！");
+      result.setCode(HttpStatus.HTTP_OK);
+      return  result;
+    });
+
+    future.exceptionally((e)->{
+      result.setCode(HttpStatus.HTTP_INTERNAL_ERROR);
+      log.error("删除授权客户端资源["+e.getMessage() +"]");
+      result.setMessage("系统出错误，请联系管理员。");
+      return null;
+    });
+
 
 
     return future;

@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
 
 /**
  * @Auther ChenShuHong
@@ -44,11 +45,10 @@ public class UserController {
     return userService.addUser(user).get();
   }
 
-  @GetMapping("deleteUser/{userId}")
+  @PostMapping("deleteUser")
   @ApiOperation(value = "删除授权用户")
-  @ApiImplicitParam(name = "userId",value = "主键ID",paramType = "path")
-  public CommonResult deleteUser(@PathVariable("userId") long id) throws  Exception{
-    return userService.deleteUser(id).get();
+  public CommonResult deleteUser(@RequestBody List<Long> ids) throws  Exception{
+    return userService.deleteUser(ids).get();
   }
 }
 
