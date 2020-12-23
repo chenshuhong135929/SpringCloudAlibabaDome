@@ -1,6 +1,6 @@
 本项目使用的是Spring Cloud Alibaba 架构
 文件部署的Nacos :
-ip:        http://192.168.1.118:8848/nacos/#/login
+ip:        http://47.112.186.155:8848/nacos/#/login
 userName : test
 password : test
 
