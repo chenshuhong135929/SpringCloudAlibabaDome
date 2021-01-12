@@ -8,7 +8,7 @@ password : test
 
 文档使用swagger
 http://localhost:8000/doc.html
-
+注意：需要在界面先收入 授权token  Bearer token（不然浏览器会一直提示输入密码账号）
 授权地址以及说明：
 
    这里存储在数据库，大家可以结合自己的业务场景考虑将access_token存入数据库还是redis
@@ -110,7 +110,7 @@ services:
     container_name: communication-consumer
     image: communication-consumer:latest
     ports:
-      - "8081:8081"
+      - "<relativePath>../pom.xml</relativePath>:8081"
     restart: always
 
   communication-auth:
