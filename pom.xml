@@ -18,6 +18,17 @@
     <packaging>pom</packaging>
     <!-- 统一管理jar包版本 -->
     <properties>
+        <!--项目共用配置-->
+        <spring.cloud.nacos.discovery.server-addr>47.112.186.155:8848</spring.cloud.nacos.discovery.server-addr>
+        <spring.cloud.nacos.discovery.username>nacos</spring.cloud.nacos.discovery.username>
+        <spring.cloud.nacos.discovery.password>test</spring.cloud.nacos.discovery.password>
+        <spring.cloud.nacos.discovery.group>CSH_GROUP</spring.cloud.nacos.discovery.group>
+        <spring.cloud.nacos.discovery.namespace>39e5abd4-68cc-453a-8074-021aa0aa9393</spring.cloud.nacos.discovery.namespace>
+        <spring.cloud.sentinel.dashboard>localhost:8080</spring.cloud.sentinel.dashboard>
+        <spring.cloud.sentinel.prot>8719</spring.cloud.sentinel.prot>
+        <spring.cloud.sentinel.dataId>sentinel-confg</spring.cloud.sentinel.dataId>
+
+
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
         <spring-cloud.version>Greenwich.SR3</spring-cloud.version>
@@ -34,7 +45,7 @@
         <mybatis.spring.boot.version>3.0.1</mybatis.spring.boot.version>
         <netty.version>4.1.43.Final</netty.version>
         <knife4j.version>2.0.3</knife4j.version>
-        <springcloudalibaba.version>2.2.1.RELEASE</springcloudalibaba.version>
+        <springcloudalibaba.version>2.2.5.RELEASE</springcloudalibaba.version>
         <hutool.version>5.1.0</hutool.version>
     </properties>
 
@@ -153,5 +164,11 @@
                 </configuration>
             </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
     </build>
 </project>
