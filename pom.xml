@@ -25,7 +25,7 @@
         <spring.cloud.nacos.discovery.group>CSH_GROUP</spring.cloud.nacos.discovery.group>
         <spring.cloud.nacos.discovery.namespace>39e5abd4-68cc-453a-8074-021aa0aa9393</spring.cloud.nacos.discovery.namespace>
         <spring.cloud.sentinel.dashboard>localhost:8080</spring.cloud.sentinel.dashboard>
-        <spring.cloud.sentinel.prot>8719</spring.cloud.sentinel.prot>
+        <spring.cloud.sentinel.port>8719</spring.cloud.sentinel.port>
         <spring.cloud.sentinel.dataId>sentinel-confg</spring.cloud.sentinel.dataId>
 
 

@@ -10,25 +10,25 @@ spring:
         group:  @spring.cloud.nacos.discovery.group@ #指定配置文件的组类型
         namespace:  @spring.cloud.nacos.discovery.namespace@
       config:
-         server-addr: @spring.cloud.nacos.discovery.server-addr@ #Nacos作为配置中心地址
-         username: @spring.cloud.nacos.discovery.username@
-         password: @spring.cloud.nacos.discovery.password@
+         server-addr: ${spring.cloud.nacos.discovery.server-addr} #Nacos作为配置中心地址
+         username: ${spring.cloud.nacos.discovery.username}
+         password: ${spring.cloud.nacos.discovery.password}
          file-extension: yaml #指定yaml格式的配置
-         group: @spring.cloud.nacos.discovery.group@ #指定配置文件的组类型
-         namespace: @spring.cloud.nacos.discovery.namespace@
+         group: ${spring.cloud.nacos.discovery.group} #指定配置文件的组类型
+         namespace: ${spring.cloud.nacos.discovery.namespace}
 
     sentinel:
       transport:
         dashboard: @spring.cloud.sentinel.dashboard@
-        port: @spring.cloud.sentinel.prot@
+        port: @spring.cloud.sentinel.port@
         datasource:
           ds1:
             nacos:
-              server-addr: @spring.cloud.nacos.discovery.server-addr@
+              server-addr: ${spring.cloud.nacos.discovery.server-addr}
               dataId: @spring.cloud.sentinel.dataId@
-              groupId: @spring.cloud.nacos.discovery.group@
-              username: @spring.cloud.nacos.discovery.username@
-              password: @spring.cloud.nacos.discovery.password@
-              namespace: @spring.cloud.nacos.discovery.namespace@
+              groupId: ${spring.cloud.nacos.discovery.group}
+              username: ${spring.cloud.nacos.discovery.username}
+              password: ${spring.cloud.nacos.discovery.password}
+              namespace: ${spring.cloud.nacos.discovery.namespace}
               data-type: json
               rule-type: flow
