@@ -24,7 +24,7 @@ http://localhost:8000/doc.html
    * http://localhost:8000/auth-consumer/oauth/check_token?token=85f2f91e-2b5b-47e8-b6a7-ecf00c710b6a
 
  docker 容器化部署
- 1，打开liunx服务器（开启 Docker 远程访问）
+ 1，打开linux服务器（开启 Docker 远程访问）
 
         1.1 打开 docker 配置文件
              vi /lib/systemd/system/docker.service
