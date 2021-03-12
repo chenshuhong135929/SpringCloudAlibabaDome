@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
+import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
@@ -28,6 +29,7 @@ import javax.sql.DataSource;
  * @Date 2020-06-09 14:27
  */
 @Configuration
+@EnableWebFluxSecurity
 public class SecurityConfig {
   private static final String MAX_AGE = "18000L";
   @Autowired
