@@ -1,0 +1,97 @@
+variables:
+  M2MICRO_GATEWAY:  "m2micro-gateway"
+  M2MICRO_GATEWAY_IMAGE:  "m2micro-gateway_server:v1.0"
+  M2MICRO_GATEWAY_PORT:  8000
+  M2MICRO_AUTH: "m2micro-auth"
+  M2MICRO_AUTH_IMAGE: "m2micro-auth_server:v1.0"
+  M2MICRO_AUTH_PORT: 8082
+  M2MICRO_SYSTEM:  "m2micro-system"
+  M2MICRO_SYSTEM_IMAGE:  "m2micro-system_server:v1.0"
+  M2MICRO_SYSTEM_PORT: 8083
+  M2MICRO_MANAGE:  "m2micro-manage"
+  M2MICRO_MANAGE_IMAGE:  "m2micro-manage_server:v1.0"
+  M2MICRO_MANAGE_PORT: 8084
+  M2MICRO_CUSTOMER:  "m2micro-customer"
+  M2MICRO_CUSTOMER_IMAGE:  "m2micro-customerserver:v1.0"
+  M2MICRO_CUSTOMER_PORT: 8085
+  M2MICRO_APP:  "m2micro-app"
+  M2MICRO_APP_IMAGE:  "m2micro-app_server:v1.0"
+  M2MICRO_APP_PORT: 8086
+  MAVEN_OPTS: "-Dmaven.repo.local=/root/.m2/repository"
+
+
+
+stages:
+   - package
+   - deploy
+
+
+cache:
+  key: "$CI_COMMIT_REF_SLUG"
+  paths:
+     - web/
+
+
+job1:maven:
+  image: maven:3.6.3-jdk-8
+  tags:
+  - maven
+  stage: package
+  script:
+  - echo "=============== 开始编译打包任务 ==============="
+  - mvn clean package -Dmaven.test.skip=true
+  - mkdir -p web/m2micro-gateway
+  - mkdir -p web/m2micro-auth
+  - mkdir -p web/m2micro-system
+  - mkdir -p web/m2micro-manage
+  - mkdir -p web/m2micro-customer
+  - mkdir -p web/m2micro-app
+  - cp -r m2micro-gateway/target/*.jar   Dockerfile web/m2micro-gateway/
+  - cp -r m2micro-auth/target/*.jar      Dockerfile web/m2micro-auth/
+  - cp -r m2micro-system/target/*.jar    Dockerfile web/m2micro-system/
+  - cp -r m2micro-manage/target/*.jar    Dockerfile web/m2micro-manage/
+  - cp -r m2micro-customer/target/*.jar  Dockerfile web/m2micro-customer/
+  - cp -r m2micro-app/target/*.jar       Dockerfile web/m2micro-app/
+
+
+
+
+
+job:deploy:
+  stage: deploy
+  cache:
+    key: "$CI_COMMIT_REF_SLUG"
+    paths:
+       - web/
+    policy: pull
+  script:
+  - docker ps -a|grep $M2MICRO_GATEWAY &&  docker stop $M2MICRO_GATEWAY && docker rm $M2MICRO_GATEWAY || echo "not exist"
+  - docker ps -a|grep $M2MICRO_AUTH &&  docker stop $M2MICRO_AUTH && docker rm $M2MICRO_AUTH || echo "not exist"
+  - docker ps -a|grep $M2MICRO_SYSTEM &&  docker stop $M2MICRO_SYSTEM && docker rm $M2MICRO_SYSTEM || echo "not exist"
+  - docker ps -a|grep $M2MICRO_MANAGE &&  docker stop $M2MICRO_MANAGE && docker rm $M2MICRO_MANAGE || echo "not exist"
+  - docker ps -a|grep $M2MICRO_CUSTOMER &&  docker stop $M2MICRO_CUSTOMER && docker rm $M2MICRO_CUSTOMER || echo "not exist"
+  - docker ps -a|grep $M2MICRO_APP &&  docker stop $M2MICRO_APP && docker rm $M2MICRO_APP || echo "not exist"
+  - docker images |grep  $M2MICRO_GATEWAY_IMAGE && docker rmi -f $M2MICRO_GATEWAY_IMAGE || echo  "not exist"
+  - docker images |grep  $M2MICRO_AUTH_IMAGE && docker rmi -f $M2MICRO_AUTH_IMAGE || echo  "not exist"
+  - docker images |grep  $M2MICRO_SYSTEM_IMAGE && docker rmi -f $M2MICRO_SYSTEM_IMAGE || echo  "not exist"
+  - docker images |grep  $M2MICRO_MANAGE_IMAGE && docker rmi -f $M2MICRO_MANAGE_IMAGE || echo  "not exist"
+  - docker images |grep  $M2MICRO_CUSTOMER_IMAGE && docker rmi -f $M2MICRO_CUSTOMER_IMAGE || echo  "not exist"
+  - docker images |grep  $M2MICRO_APP_IMAGE && docker rmi -f $M2MICRO_APP_IMAGE || echo  "not exist"
+  - docker build --build-arg JAR_FILE=*.jar  --build-arg  PORT=$M2MICRO_GATEWAY_PORT  -t $M2MICRO_GATEWAY_IMAGE  web/m2micro-gateway
+  - docker build --build-arg JAR_FILE=*.jar  --build-arg  PORT=$M2MICRO_AUTH_PORT     -t $M2MICRO_AUTH_IMAGE  web/m2micro-auth
+  - docker build --build-arg JAR_FILE=*.jar  --build-arg  PORT=$M2MICRO_SYSTEM_PORT   -t $M2MICRO_SYSTEM_IMAGE  web/m2micro-system
+  - docker build --build-arg JAR_FILE=*.jar  --build-arg  PORT=$M2MICRO_MANAGE_PORT   -t $M2MICRO_MANAGE_IMAGE  web/m2micro-manage
+  - docker build --build-arg JAR_FILE=*.jar  --build-arg  PORT=$M2MICRO_CUSTOMER_PORT -t $M2MICRO_CUSTOMER_IMAGE  web/m2micro-customer
+  - docker build --build-arg JAR_FILE=*.jar  --build-arg  PORT=$M2MICRO_APP_PORT  -t $M2MICRO_APP_IMAGE  web/m2micro-app
+  - docker run -it -d --name $M2MICRO_GATEWAY -p $M2MICRO_GATEWAY_PORT:$M2MICRO_GATEWAY_PORT $M2MICRO_GATEWAY_IMAGE
+  - docker run -it -d --name $M2MICRO_AUTH -p $M2MICRO_AUTH_PORT:$M2MICRO_AUTH_PORT $M2MICRO_AUTH_IMAGE
+  - docker run -it -d --name $M2MICRO_SYSTEM -p $M2MICRO_SYSTEM_PORT:$M2MICRO_SYSTEM_PORT $M2MICRO_SYSTEM_IMAGE
+  - docker run -it -d --name $M2MICRO_MANAGE -p $M2MICRO_MANAGE_PORT:$M2MICRO_MANAGE_PORT $M2MICRO_MANAGE_IMAGE
+  - docker run -it -d --name $M2MICRO_CUSTOMER -p $M2MICRO_CUSTOMER_PORT:$M2MICRO_CUSTOMER_PORT $M2MICRO_CUSTOMER_IMAGE
+  - docker run -it -d --name $M2MICRO_APP  -p $M2MICRO_APP_PORT:$M2MICRO_APP_PORT $M2MICRO_APP_IMAGE
+  only:
+  - dev
+  variables:
+    GIT_STRATEGY: none
+  tags:
+  - docker
