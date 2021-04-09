@@ -3,6 +3,7 @@ package com.wisdomcommand.communication.controller;
 import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.communication.common.CommonResult;
 import com.communication.entity.Payment;
+import com.wisdomcommand.communication.event.RoleChangeEvent;
 import com.wisdomcommand.communication.service.PaymentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -34,7 +35,10 @@ public class PaymentController {
   public CommonResult<Payment> paymentSQL(@PathVariable("id") Long id)
   {
     CommonResult<Payment> paymentCommonResult = paymentService.paymentSQL(id);
+    //第一种发布事件形式
     applicationEventPublisher.publishEvent(paymentCommonResult.getData());
+    //第二种发布事件形式
+    applicationEventPublisher.publishEvent(new RoleChangeEvent(""));
     return paymentCommonResult;
   }
 //事件回掉示例
