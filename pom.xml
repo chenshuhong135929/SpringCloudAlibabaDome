@@ -13,6 +13,7 @@
         <module>communication-gateway</module>
         <module>communication-chat</module>
         <module>communication-auth</module>
+        <module>cloud-component-logging-starter</module>
     </modules>
 
     <packaging>pom</packaging>
