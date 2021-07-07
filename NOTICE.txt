@@ -131,3 +131,8 @@ services:
 docker-compose -f docker-compose up
 退出
 docker-compose -f docker-compose down
+
+生成证书
+keytool -genkey -alias ffzs-jwt -keyalg RSA -keysize 1024 -keystore ffzs-jwt.jks -validity 365 -keypass ffzs00 -storepass ffzs00
+
+keytool -list -rfc --keystore ffzs-jwt.jks | openssl x509 -inform pem -pubkey

@@ -3,6 +3,8 @@ package com.wisdomcommand.communication.controller;
 import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.communication.common.CommonResult;
 import com.communication.entity.Payment;
+import com.communication.entity.UserDTO;
+import com.wisdomcommand.communication.config.LoginUserHolder;
 import com.wisdomcommand.communication.event.RoleChangeEvent;
 import com.wisdomcommand.communication.service.PaymentService;
 import io.swagger.annotations.Api;
@@ -41,6 +43,16 @@ public class PaymentController {
     applicationEventPublisher.publishEvent(new RoleChangeEvent(""));
     return paymentCommonResult;
   }
+
+  @Autowired
+  private LoginUserHolder loginUserHolder;
+
+  @GetMapping("/currentUser")
+  public UserDTO currentUser() {
+    return loginUserHolder.getCurrentUser();
+  }
+
+
 //事件回掉示例
   @EventListener
   @Async

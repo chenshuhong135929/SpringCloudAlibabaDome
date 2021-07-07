@@ -18,9 +18,10 @@ spring:
         file-extension: yaml #指定yaml格式的配置
         group: ${spring.cloud.nacos.discovery.group} #指定配置文件的组类型
         namespace: ${spring.cloud.nacos.discovery.namespace}
-
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
   redis:
-    host: 192.168.2.17
-    password:
+    host: 192.168.1.4
     port: 6379
     database: 0
+    password: M2M123456

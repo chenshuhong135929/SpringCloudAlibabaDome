@@ -1,9 +1,12 @@
 package com.wisdomcommand.communication.controller;
 
+import cn.hutool.core.util.StrUtil;
 import com.communication.common.CommonResult;
+
 import com.wisdomcommand.communication.entity.User;
 import com.wisdomcommand.communication.mapper.UserMapper;
 import com.wisdomcommand.communication.service.UserService;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -12,6 +15,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.nio.charset.StandardCharsets;
 import java.security.Principal;
 import java.util.List;
 
@@ -27,6 +32,10 @@ public class UserController {
   public UserService userService;
 
 
+
+
+
+
   /**
    * 获取授权的用户信息
    * @param principal 当前用户
@@ -38,6 +47,7 @@ public class UserController {
 
     return principal;
   }
+
 
   @PostMapping("addUser")
   @ApiOperation(value = "添加授权用户")

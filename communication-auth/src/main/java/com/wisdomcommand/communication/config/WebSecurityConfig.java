@@ -76,7 +76,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         "/v2/api-docs/**",
         "/swagger-resources/**",
         "/webjars/**",
-        "/favicon.ico"
+        "/favicon.ico","/rsa/publicKey"
     );
   }
 }

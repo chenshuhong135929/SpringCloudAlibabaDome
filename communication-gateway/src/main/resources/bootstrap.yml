@@ -33,3 +33,22 @@ spring:
             data-type: json
             rule-type: flow
 
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: 'http://localhost:8083/auth-consumer/rsa/publicKey' #配置RSA的公钥访问地址
+
+  redis:
+    host: 192.168.1.4
+    port: 6379
+    database: 0
+    password: M2M123456
+
+secure:
+  ignore:
+    urls: #配置白名单路径
+    - "/actuator/**"
+    - "/auth/oauth/token"
+
+

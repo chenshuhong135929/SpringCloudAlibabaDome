@@ -1,25 +1,29 @@
 package com.wisdomcommand.communication.config;
-
-import com.wisdomcommand.communication.service.impl.UserDetailServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import java.security.KeyPair;
+import com.wisdomcommand.communication.service.impl.UserDetailServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
+import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
-import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
-
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
+import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 import javax.sql.DataSource;
+import java.util.*;
 
 /**
  * 授权/认证服务器配置
@@ -31,8 +35,7 @@ import javax.sql.DataSource;
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
   @Autowired
   private UserDetailServiceImpl userDetailService;
-  @Autowired
-  private RedisConnectionFactory redisConnectionFactory;
+
   // 认证管理器
   @Autowired
   private AuthenticationManager authenticationManager;
@@ -55,14 +58,71 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
    * http://192.168.2.17:8083/auth-consumer/oauth/check_token?token=85f2f91e-2b5b-47e8-b6a7-ecf00c710b6a
    */
 
-  @Bean
+
+//使用jwt  (jwt)
   public TokenStore tokenStore() {
-    return new JdbcTokenStore(dataSource);
+    return new JwtTokenStore(jwtAccessTokenConverter());
   }
- /* @Bean
-  public TokenStore tokenStore() {
-    return new RedisTokenStore(redisConnectionFactory);
-  }*/
+
+
+  @Bean
+  protected JwtAccessTokenConverter jwtAccessTokenConverter() {
+    //converter.setSigningKey(JwtConstant.SigningKey);
+    JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+    converter.setKeyPair(keyPair());
+    return converter;
+  }
+
+  @Bean
+  public KeyPair keyPair() {
+    KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(new ClassPathResource("ffzs-jwt.jks"), "ffzs00".toCharArray());
+    return keyStoreKeyFactory.getKeyPair("ffzs-jwt");
+
+  }
+
+  @Bean
+  public CustomTokenEnhancer customTokenEnhancer() {
+    return new CustomTokenEnhancer();
+  }
+
+  /**
+   * 认证服务器Endpoints配置 （jwt）
+   * @param endpoints
+   * @throws Exception
+   */
+  @Override
+  public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+    //如果需要使用refresh_token模式则需要注入userDetailService
+    TokenEnhancerChain enhancerChain = new TokenEnhancerChain();
+    enhancerChain.setTokenEnhancers(Arrays.asList(customTokenEnhancer(), jwtAccessTokenConverter()));
+    endpoints.authenticationManager(this.authenticationManager)
+        .userDetailsService(userDetailService)
+        .tokenStore(tokenStore())
+        .accessTokenConverter(jwtAccessTokenConverter())
+       // 注入自定义的tokenservice，如果不使用自定义的tokenService那么就需要将tokenServce里的配置移到这里
+        .tokenServices(tokenServices())
+        .tokenEnhancer(enhancerChain);
+  }
+
+  @Primary
+  @Bean
+  public DefaultTokenServices tokenServices(){
+    TokenEnhancerChain enhancerChain = new TokenEnhancerChain();
+    enhancerChain.setTokenEnhancers(Arrays.asList(customTokenEnhancer(), jwtAccessTokenConverter()));
+    DefaultTokenServices tokenServices = new DefaultTokenServices();
+    tokenServices.setTokenEnhancer(jwtAccessTokenConverter());
+    tokenServices.setTokenStore(tokenStore());
+    tokenServices.setTokenEnhancer(enhancerChain);
+    tokenServices.setSupportRefreshToken(true);
+    //设置token有效期，默认12小时，此处修改为6小时   21600
+    tokenServices.setAccessTokenValiditySeconds(60 * 60 * 6);
+    //设置refresh_token的有效期，默认30天，此处修改为7天
+    tokenServices.setRefreshTokenValiditySeconds(60 * 60 * 24 * 7);
+    return tokenServices;
+  }
+
+
+
   /**
    * 从数据库读取clientDetails相关配置
    * 有InMemoryClientDetailsService 和 JdbcClientDetailsService 两种方式选择
@@ -80,16 +140,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     return new BCryptPasswordEncoder();
   }
 
-  /**
-   * 认证服务器Endpoints配置
-   */
-  @Override
-  public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-    //如果需要使用refresh_token模式则需要注入userDetailService
-    endpoints.userDetailsService(userDetailService);
-    endpoints.authenticationManager(this.authenticationManager);
-    endpoints.tokenStore(tokenStore());
-  }
+
 
   /**
    * 认证服务器相关接口权限管理

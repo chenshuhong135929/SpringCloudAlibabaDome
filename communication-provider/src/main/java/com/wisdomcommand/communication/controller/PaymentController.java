@@ -22,7 +22,7 @@ public class PaymentController
     @GetMapping(value = "/paymentSQL/{id}")
     public CommonResult<Payment> paymentSQL(@PathVariable("id") Long id)
     {
-        CommonResult<Payment> result = new CommonResult(200,"from mysql,serverPort:  ",paymentService.paymentSQL(id));
+        CommonResult<Payment> result = CommonResult.ok(paymentService.paymentSQL(id));
         return result;
     }
 

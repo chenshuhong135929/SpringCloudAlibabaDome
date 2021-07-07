@@ -1,14 +1,21 @@
 package com.wisdomcommand.gateway.config;
 
+import cn.hutool.core.util.ArrayUtil;
+import com.wisdomcommand.gateway.authorization.AuthorizationManager;
+import com.wisdomcommand.gateway.component.RestAuthenticationEntryPoint;
+import com.wisdomcommand.gateway.component.RestfulAccessDeniedHandler;
+import com.wisdomcommand.gateway.constant.AuthConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
@@ -21,7 +28,11 @@ import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
-
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
+import org.springframework.security.oauth2.server.resource.authentication.ReactiveJwtAuthenticationConverterAdapter;
 import javax.sql.DataSource;
 
 /**
@@ -32,10 +43,49 @@ import javax.sql.DataSource;
 @EnableWebFluxSecurity
 public class SecurityConfig {
   private static final String MAX_AGE = "18000L";
+
+
+
   @Autowired
-  private DataSource dataSource;
+   AuthorizationManager authorizationManager;
   @Autowired
-  private AccessManager accessManager;
+ IgnoreUrlsConfig ignoreUrlsConfig;
+  @Autowired
+ RestfulAccessDeniedHandler restfulAccessDeniedHandler;
+  @Autowired
+ RestAuthenticationEntryPoint restAuthenticationEntryPoint;
+
+  public SecurityConfig() {
+  }
+
+  @Bean
+  public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
+    http.oauth2ResourceServer().jwt()
+        .jwtAuthenticationConverter(jwtAuthenticationConverter());
+         http.authorizeExchange()
+        .pathMatchers(ArrayUtil.toArray(ignoreUrlsConfig.getPermitAll(),String.class)).permitAll()//白名单配置
+        .anyExchange().access(authorizationManager)//鉴权管理器配置
+        .and().exceptionHandling()
+        .accessDeniedHandler(restfulAccessDeniedHandler)//处理未授权
+        .authenticationEntryPoint(restAuthenticationEntryPoint)//处理未认证
+        .and()
+        .addFilterAt(corsFilter(), SecurityWebFiltersOrder.CORS)
+        .csrf().disable();
+    return http.build();
+  }
+
+  @Bean
+  public Converter<Jwt, ? extends Mono<? extends AbstractAuthenticationToken>> jwtAuthenticationConverter() {
+    JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
+    jwtGrantedAuthoritiesConverter.setAuthorityPrefix(AuthConstant.AUTHORITY_PREFIX);
+    jwtGrantedAuthoritiesConverter.setAuthoritiesClaimName(AuthConstant.AUTHORITY_CLAIM_NAME);
+    JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
+    jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);
+    return new ReactiveJwtAuthenticationConverterAdapter(jwtAuthenticationConverter);
+  }
+
+
+
 
   /**
    * 跨域配置
@@ -63,27 +113,5 @@ public class SecurityConfig {
       }
       return chain.filter(ctx);
     };
-  }
-
-  @Bean
-  SecurityWebFilterChain webFluxSecurityFilterChain(ServerHttpSecurity http) throws Exception{
-    //token管理器
-    ReactiveAuthenticationManager tokenAuthenticationManager = new ReactiveJdbcAuthenticationManager(new JdbcTokenStore(dataSource));
-    //认证过滤器
-    AuthenticationWebFilter authenticationWebFilter = new AuthenticationWebFilter(tokenAuthenticationManager);
-    authenticationWebFilter.setServerAuthenticationConverter(new ServerBearerTokenAuthenticationConverter());
-
-    http
-        .httpBasic().disable()
-        .csrf().disable()
-        .authorizeExchange()
-        .pathMatchers(HttpMethod.OPTIONS).permitAll()
-        .anyExchange().access(accessManager)
-        .and()
-        // 跨域过滤器
-        .addFilterAt(corsFilter(), SecurityWebFiltersOrder.CORS)
-        //oauth2认证过滤器
-        .addFilterAt(authenticationWebFilter, SecurityWebFiltersOrder.AUTHENTICATION);
-    return http.build();
   }
 }
