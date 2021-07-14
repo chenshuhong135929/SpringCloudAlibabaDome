@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 /**
  *
  */
-@FeignClient(value = "communication-provider",fallback = PaymentFallbackService.class)
+@FeignClient(value = "communication-provider",  contextId ="provider1",   fallback = PaymentFallbackService.class)
 public interface PaymentService
 {
     @GetMapping(value = "/paymentSQL/{id}")

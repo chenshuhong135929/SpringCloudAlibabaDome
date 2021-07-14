@@ -77,6 +77,8 @@ job:deploy:
   - docker images |grep  $M2MICRO_MANAGE_IMAGE && docker rmi -f $M2MICRO_MANAGE_IMAGE || echo  "not exist"
   - docker images |grep  $M2MICRO_CUSTOMER_IMAGE && docker rmi -f $M2MICRO_CUSTOMER_IMAGE || echo  "not exist"
   - docker images |grep  $M2MICRO_APP_IMAGE && docker rmi -f $M2MICRO_APP_IMAGE || echo  "not exist"
+  - docker volume prune -f
+  - docker system prune -a -f
   - docker build --build-arg JAR_FILE=*.jar  --build-arg  PORT=$M2MICRO_GATEWAY_PORT  -t $M2MICRO_GATEWAY_IMAGE  web/m2micro-gateway
   - docker build --build-arg JAR_FILE=*.jar  --build-arg  PORT=$M2MICRO_AUTH_PORT     -t $M2MICRO_AUTH_IMAGE  web/m2micro-auth
   - docker build --build-arg JAR_FILE=*.jar  --build-arg  PORT=$M2MICRO_SYSTEM_PORT   -t $M2MICRO_SYSTEM_IMAGE  web/m2micro-system
