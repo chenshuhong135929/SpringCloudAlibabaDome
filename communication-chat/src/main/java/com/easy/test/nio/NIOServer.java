@@ -55,6 +55,7 @@ public class NIOServer {
           //将socketChannel 注册到selector,关注事件为OP_READ，同时给socketChannel
           //关联一个Buffer
           socketChannel.register(selector,SelectionKey.OP_READ, ByteBuffer.allocate(1024));
+          System.out.println("客户端注册到selectionkey 数量="+  selector.keys().size());
         }
 
         //
