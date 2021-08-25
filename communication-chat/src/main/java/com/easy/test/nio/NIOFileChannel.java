@@ -158,6 +158,23 @@ public class NIOFileChannel {
 
   }
 
+
+  /**
+   * 文件零拷贝
+   */
+  public void test9() throws IOException {
+    SocketChannel socketChannel = SocketChannel.open();
+    socketChannel.socket().bind(new InetSocketAddress("localhost",999));
+    socketChannel.configureBlocking(false);
+    //FileChannel fileChannel = FileChannel.open()
+    FileChannel channel = new FileInputStream(new File("C:\\Users\\Administrator\\Desktop\\springcloud-learning-master.zip")).getChannel();
+   //transferTo一次只能上传8m所以后面可以做一个循环进行操作
+    long transferCount = channel.transferTo(0, channel.size(), socketChannel);
+    System.out.println("发送的总字节数： "+transferCount);
+    channel.close();
+
+  }
+
   /**
    * 1，NIO中的ServerSocketChannel功能似ServerSocket ,SocketChannel 功能类似Socket
    * 2，selector 相关方法说明
