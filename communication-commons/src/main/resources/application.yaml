@@ -1,0 +1,18 @@
+spring:
+  mail:
+    username: 1048369112@qq.com
+    password: jgosgbaczxoxbeee
+    host: smtp.qq.com
+    smtp:
+      ssl:
+        enable: true
+alibaba:
+  sms:
+    product: Dysmsapi
+    domain: dysmsapi.aliyuncs.com
+    accessKeyId:
+    accessKeySecret:
+    signName:
+    templateCode:
+
+

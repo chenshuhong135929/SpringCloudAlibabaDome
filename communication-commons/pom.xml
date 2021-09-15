@@ -37,6 +37,29 @@
           <groupId>com.baomidou</groupId>
           <artifactId>mybatis-plus-boot-starter</artifactId>
       </dependency>
-
-</dependencies>
+      <dependency>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-mail</artifactId>
+      </dependency>
+      <!-- 阿里短信平台依赖 -->
+      <dependency>
+          <groupId>com.aliyun</groupId>
+          <artifactId>aliyun-java-sdk-core</artifactId>
+          <version>4.0.2</version>
+      </dependency>
+      <dependency>
+          <groupId>com.aliyun</groupId>
+          <artifactId>aliyun-java-sdk-dysmsapi</artifactId>
+          <version>1.1.0</version>
+      </dependency>
+      <dependency>
+          <groupId>org.json</groupId>
+          <artifactId>json</artifactId>
+          <version>20180130</version>
+      </dependency>
+      <dependency>
+          <groupId>org.springframework.cloud</groupId>
+          <artifactId>spring-cloud-context</artifactId>
+      </dependency>
+  </dependencies>
 </project>
