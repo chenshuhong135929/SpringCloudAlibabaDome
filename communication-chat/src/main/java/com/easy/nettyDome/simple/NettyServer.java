@@ -2,6 +2,7 @@ package com.easy.nettyDome.simple;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -62,6 +63,11 @@ public class NettyServer {
             //给pipeline  设置处理器
             @Override
             protected void initChannel(SocketChannel socketChannel) throws Exception {
+              /**
+               * 可以使用一个集合管理SocketChannel ,再推送消息时，可以将各个channel
+               * 对应的NIOEventLoop的taskQueue或者scheduleTasKQueue
+               */
+
               socketChannel.pipeline().addLast(new NettyServerHandler());
             }
           });//给我们的workerGroup的EventLoop对应的管道设置处理器
@@ -69,7 +75,16 @@ public class NettyServer {
       System.out.println(".....服务器 is  ready ...");
       //绑定一个端口，并且同步处理，生成一个ChannelFuture对象
       ChannelFuture channelFuture = bootstrap.bind(6668).sync();
-
+      //给ChannelFuture 注册监听器，监控我们关心的事件
+      channelFuture.addListener(
+          (ChannelFutureListener) future -> {
+            if(channelFuture.isSuccess()){
+              System.out.println("监听端口  6668  成功");
+            }else{
+              System.out.println("监听端口失败");
+            }
+          }
+      );
       //对关闭通道进行监听
       channelFuture.channel().closeFuture().sync();
     }finally {

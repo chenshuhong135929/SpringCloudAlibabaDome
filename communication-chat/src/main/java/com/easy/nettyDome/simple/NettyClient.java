@@ -2,6 +2,7 @@ package com.easy.nettyDome.simple;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -41,6 +42,14 @@ public class NettyClient {
     ChannelFuture cf = bootstrap.connect("localhost", 6668).sync();
     //给关闭通道进行监听
     cf.channel().closeFuture().sync();
+    //给ChannelFuture 注册监听器，监控我们关心的事件
+    cf.addListener(
+        (ChannelFutureListener) future -> {
+           if(cf.isSuccess()){
+             System.out.println("连接服务器端成功");
+           }
+        }
+    );
     }finally {
       group.shutdownGracefully();
     }
