@@ -54,9 +54,17 @@ public class NettyServer {
       ServerBootstrap bootstrap = new ServerBootstrap();
 
       bootstrap.group(bossGroup, workerGroup)//设置两个线程组
+          //Channel的定义是跟我们的协议有关系的
+          /**
+           * NioSocketChannel异步的客户端TCP Socket连接
+           * NioServerSocketChannel 异步的服务器端TCP Socket连接
+           * NioDatagramChannel 异步的UDP连接
+           * NioSctpServerChannel  异步的sctp服务器端连接 ，这些通道涵盖了UDP和TCP网络IO以及文件IO
+           */
           .channel(NioServerSocketChannel.class)//使用NioSocketChannel作为服务器通道实现
           .option(ChannelOption.SO_BACKLOG, 128)//设置线程队列得到的连接个数
           .childOption(ChannelOption.SO_KEEPALIVE, true)//设置保持活动连接状态
+          .handler(null)//handler是在Boss里面加handler  ，childHandler是在worker里面加handler
           .childHandler(new ChannelInitializer<SocketChannel>() {//创建一个通道测试对象（匿名对象）
 
 
