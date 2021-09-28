@@ -24,6 +24,12 @@ public class NettyByteBuf02 {
       //将content转为字符串
       System.out.println(new String(content,CharsetUtil.UTF_8));
 
+      System.out.println("byteBuff=="+ byteBuf);
+      System.out.println(byteBuf.arrayOffset());
+      System.out.println(byteBuf.readerIndex());
+      System.out.println(byteBuf.writerIndex());
+      System.out.println(byteBuf.capacity());
+      int i = byteBuf.readableBytes();//可读的字节数 12
     }
   }
 }
