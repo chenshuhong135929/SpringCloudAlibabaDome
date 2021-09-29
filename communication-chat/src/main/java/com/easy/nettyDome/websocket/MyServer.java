@@ -1,6 +1,6 @@
 package com.easy.nettyDome.websocket;
 
-import com.easy.nettyDome.heartbeat.MyServerHandler;
+
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
