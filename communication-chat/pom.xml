@@ -66,6 +66,12 @@
             <artifactId>communication-commons</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <!--protobuf-->
+        <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+            <version>3.6.1</version>
+        </dependency>
 </dependencies>
     <build>
         <plugins>

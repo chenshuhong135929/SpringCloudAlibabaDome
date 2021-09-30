@@ -40,6 +40,11 @@ public class GroupChatServer {
             @Override
             protected void initChannel(SocketChannel ch) throws Exception {
               ChannelPipeline pipeline = ch.pipeline();
+              /**
+               *  说明：
+               *  codec(编码器)的组成部分有两个，decoder(解码器)和encoder（编码器），
+               *  encoder负责把业务数据转换成字节数据，decoder负责把字节数据转换成业务数据
+               */
               //加入解码器
               pipeline.addLast("decoder",new StringDecoder());
               //编码器
