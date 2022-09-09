@@ -1,11 +1,26 @@
 spring:
   mail:
+    enable: true
     username: 1048369112@qq.com
     password: jgosgbaczxoxbeee
     host: smtp.qq.com
     smtp:
       ssl:
         enable: true
+
+  #  mail:
+  #   enable: true
+  #    host: smtp.gmail.com
+  #    password: qzfwctezpymqvlun
+  #    port: 587
+  #    properties:
+  #      mail:
+  #        smtp:
+  #          auth: true
+  #          starttls:
+  #            enable: true
+  #            required: true
+  #    username: shuhong.chen1025@gmail.com
 alibaba:
   sms:
     product: Dysmsapi
